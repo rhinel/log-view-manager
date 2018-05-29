@@ -1,0 +1,67 @@
+.main-wrap {
+  height: 100%;
+  width: 100%;
+  background-image: url("./assets/bay-beach-clouds.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  position: relative;
+}
+
+.login-wrap {
+  width: 500px;
+  max-width: 90%;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  overflow: visible;
+
+  .login-hello {
+    font-size: 30px;
+    text-align: center;
+    margin-bottom: 20px;
+
+    @keyframes hello {
+      0% {
+        opacity: 0;
+      }
+
+      50% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+      }
+    }
+
+    & > i {
+      display: inline-block;
+      width: 15px;
+      height: 5px;
+      background-color: #666;
+      opacity: 0;
+      animation: hello 1.5s infinite;
+    }
+  }
+
+  .beian {
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    bottom: -70px;
+    line-height: 30px;
+    left: 0;
+    color: #fff;
+    a {
+      color: #fff;
+      text-decoration: none;
+    }
+  }
+
+  .login-go {
+    width: 100%;
+  }
+}
