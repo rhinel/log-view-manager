@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Card, Form, Input, Button } from 'element-react';
 // import Md5 from 'md5';
-import packageConfig from '../package.json'
+import packageConfig from '../../../package.json';
 
-import './App.scss';
+import './login.scss';
 
-class App extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -48,7 +48,7 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
+      <div className="page">
         <div className="main-wrap">
           <Card className="login-wrap">
             <div className="login-hello">
@@ -102,4 +102,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default Login;
