@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-export default function routeHookAuth(importComponent) {
-  class routeHookAuth extends Component {
+export default function RouteHookAuth(importComponent) {
+  class RouteHookAuth extends Component {
     constructor(props) {
       super(props);
 
@@ -11,7 +11,7 @@ export default function routeHookAuth(importComponent) {
     }
 
     async componentDidMount() {
-      console.log('routeHookAuth start');
+      console.log('RouteHookAuth Start');
       console.log(new Date());
 
       // 此处为token校验
@@ -21,10 +21,12 @@ export default function routeHookAuth(importComponent) {
         }, 2000);
       });
 
-      console.log('routeHookAuth end');
+      console.log('RouteHookAuth End');
       console.log(new Date());
 
-      console.log('routeHookAuth render');
+      console.log('RouteHookAuth Render');
+
+      importComponent.displayName = 'RouteHookAuthDom';
 
       this.setState({
         component: importComponent,
@@ -38,5 +40,5 @@ export default function routeHookAuth(importComponent) {
     }
   }
 
-  return routeHookAuth;
+  return RouteHookAuth;
 }

@@ -5,20 +5,20 @@ import {
   Switch,
 } from 'react-router-dom';
 
-import routeHookAuth from './routeHook';
+import RouteHookAuth from './routeHook';
 
 import Login from './component/auth/login';
 import InnerHeader from './component/inner/inner-header';
 import Dashboard from './component/dashboard/dashboard';
 
-export default () => (
+export const Root = () => (
   <Router>
     <div className="router-wrap">
       <Switch>
 
         <Route
           path="/inner"
-          component={routeHookAuth(() => (
+          component={RouteHookAuth(() => (
             <div className="inner-wrap">
 
               <div className="inner-head-wrap">
