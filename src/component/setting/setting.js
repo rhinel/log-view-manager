@@ -7,7 +7,7 @@ class Setting extends Component {
 
   render() {
     return (
-      <div className="setting">
+      <div className="inner setting">
         setting<br />
         <Link to="/inner/dashboard">dashboard</Link>
       </div>

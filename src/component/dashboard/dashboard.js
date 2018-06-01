@@ -7,7 +7,7 @@ class Dashboard extends Component {
 
   render() {
     return (
-      <div className="dashboard">
+      <div className="inner dashboard">
         dashboard<br />
         <Link to="/inner/setting">setting</Link>
       </div>

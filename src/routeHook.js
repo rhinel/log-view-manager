@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import { Message } from 'element-react';
+import { Message, Loading } from 'element-react';
 import Qs from 'query-string';
 import C from '@/common/config';
 import Request from '@/common/request';
@@ -75,7 +75,7 @@ const RouteHookLogin = (loginComponent) => {
         return <Redirect to={innerPath} />;
       }
 
-      return null;
+      return <Loading fullscreen={true} />;
     }
   }
 
@@ -155,7 +155,7 @@ const RouteHookAuth = (underAuthComponent) => {
         return <Redirect to={loginPath} />;
       }
 
-      return null;
+      return <Loading fullscreen={true} />;
     }
   }
 
