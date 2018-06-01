@@ -5,11 +5,15 @@ import {
   Switch,
 } from 'react-router-dom';
 
-import RouteHookAuth from './routeHook';
+import {
+  RouteHookAuth,
+  RouteHookLogin,
+} from '@/routeHook';
 
-import Login from './component/auth/login';
-import InnerHeader from './component/inner/inner-header';
-import Dashboard from './component/dashboard/dashboard';
+import Login from '@/component/auth/login';
+import InnerHeader from '@/component/inner/inner-header';
+import Dashboard from '@/component/dashboard/dashboard';
+import Setting from '@/component/setting/setting';
 
 export const Root = () => (
   <Router>
@@ -26,8 +30,9 @@ export const Root = () => (
               </div>
 
               <div className="inner-page-wrap">
-                <Route path="/inner/dashboard" component={Dashboard} />
-                <Route path="/inner" exact component={Dashboard} />
+                <Route path="/inner/setting" component={RouteHookAuth(Setting)} />
+                <Route path="/inner/dashboard" component={RouteHookAuth(Dashboard)} />
+                <Route path="/inner" exact component={RouteHookAuth(Dashboard)} />
               </div>
 
             </div>
@@ -36,14 +41,14 @@ export const Root = () => (
 
         <Route
           path="/"
-          render={() => (
+          component={RouteHookLogin(() => (
             <div className="auth-wrap">
 
-              <Route path="/login" component={Login} />
-              <Route path="/" exact component={Login} />
+              <Route path="/login" component={RouteHookLogin(Login)} />
+              <Route path="/" exact component={RouteHookLogin(Login)} />
 
             </div>
-          )}
+          ))}
         />
 
       </Switch>
