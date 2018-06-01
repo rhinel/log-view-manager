@@ -22,3 +22,17 @@ textarea {
   line-height: inherit;
   color: inherit;
 }
+
+.inner-head-wrap {
+  background-color: #324157;
+
+  & > * {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+}
+
+.inner-page-wrap > * {
+  max-width: 1200px;
+  margin: 0 auto;
+}

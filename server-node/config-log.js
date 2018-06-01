@@ -73,7 +73,7 @@ module.exports = {
     console: { type: 'console' },
   },
   categories: {
-    default: { appenders: ['console'], level: 'info' },
+    default: { appenders: ['console', 'errors'], level: 'info' },
     http: { appenders: ['http', 'errors'], level: 'info' },
     sys: { appenders: ['sys', 'console', 'errors'], level: 'info' },
 

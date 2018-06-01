@@ -30,7 +30,7 @@ module.exports = (req = {}, code = 0, data = '') => {
     const { name, pwd } = req.body
     apiLog.info(req.params.function, name, pwd, data.message || data)
   } else if (data instanceof Error) {
-    apiLog.error(req.params.function, data.message || data, data)
+    apiLog.error(req.params.function || req.params[0], data.message || data, data)
   } else if (req.typeApi === 'innerApi') {
     apiLog.info(req.params.function, '接口请求成功', req.userData.name)
   } else if (req.typeApi === 'outerApi') {

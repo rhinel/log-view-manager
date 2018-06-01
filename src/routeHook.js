@@ -14,11 +14,12 @@ const RouteHookLogin = (loginComponent) => {
 
       this.state = {
         component: null,
-        auth: true,
+        auth: false,
       };
     }
 
     async componentDidMount() {
+      // console.log('login', RoutePathname, window.location.pathname);
       await this.checkAuth();
 
       loginComponent.displayName = 'RouteHookAuthLogin';
@@ -29,23 +30,29 @@ const RouteHookLogin = (loginComponent) => {
     }
 
     async checkAuth() {
-      if (RoutePathname !== window.location.pathname) {
-        RoutePathname = window.location.pathname;
-        const token = localStorage.getItem(`${C.Storage}token`);
-        if (!token) {
-          return;
-        }
+      // 如果是相同地址，则不给权限
+      if (RoutePathname === window.location.pathname) {
+        return;
+      }
 
-        try {
-          await Request('/inner/auth/check');
-        } catch (err) {
-          console.log(err);
-          return;
-        }
+      RoutePathname = window.location.pathname;
+
+      // 如果没有token，则不给权限
+      const token = localStorage.getItem(`${C.Storage}token`);
+      if (!token) {
+        return;
+      }
+
+      // token没有权限，则不给权限
+      try {
+        await Request('/inner/auth/check');
+      } catch (err) {
+        console.log(err);
+        return;
       }
 
       this.setState({
-        auth: false,
+        auth: true,
       });
     }
 
@@ -53,15 +60,17 @@ const RouteHookLogin = (loginComponent) => {
       const Component = this.state.component;
       const auth = this.state.auth;
 
-      if (auth && Component) {
+      if (!auth && Component) {
         return <Component {...this.props} />;
-      } else if (!auth && Component) {
+      } else if (auth && Component) {
         let innerPath;
         const search = Qs.parse(window.location.search);
         if (search.backurl) {
           innerPath = search.backurl;
+          RoutePathname = innerPath.split('#')[0].split('?')[0];
         } else {
           innerPath = '/inner';
+          RoutePathname = innerPath;
         }
         return <Redirect to={innerPath} />;
       }
@@ -85,6 +94,7 @@ const RouteHookAuth = (underAuthComponent) => {
     }
 
     async componentDidMount() {
+      // console.log('auth', RoutePathname, window.location.pathname);
       await this.checkAuth();
 
       underAuthComponent.displayName = 'RouteHookAuthDom';
@@ -95,14 +105,18 @@ const RouteHookAuth = (underAuthComponent) => {
     }
 
     async checkAuth() {
+      // 如果地址不相同，进入校验，否则直接给权限
       if (RoutePathname !== window.location.pathname) {
         RoutePathname = window.location.pathname;
+
+        // 如果没有token，则不给权限
         const token = localStorage.getItem(`${C.Storage}token`);
         if (!token) {
           this.noAuth('请重新登陆');
           return;
         }
 
+        // token没有权限，则不给权限
         try {
           await Request('/inner/auth/check');
         } catch (err) {
