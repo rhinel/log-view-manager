@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Breadcrumb } from 'element-react';
 
 import './setting.scss';
 
@@ -8,8 +8,11 @@ class Setting extends Component {
   render() {
     return (
       <div className="inner setting">
-        setting<br />
-        <Link to="/inner/dashboard">dashboard</Link>
+        <div className="breadcrumb">
+          <Breadcrumb separator="/">
+            <Breadcrumb.Item>系统设置</Breadcrumb.Item>
+          </Breadcrumb>
+        </div>
       </div>
     )
   }
