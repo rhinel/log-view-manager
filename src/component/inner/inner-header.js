@@ -5,6 +5,7 @@ import { Menu } from 'element-react';
 import './inner-header.scss';
 
 class InnerHeader extends Component {
+
   onSelect(path) {
     if (this.props.location.pathname === path) return;
     this.props.history
