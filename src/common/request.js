@@ -47,11 +47,11 @@ const Request = (path, body) => {
           .push(`/login?backurl=${encodeURIComponent(window.location.pathname)}`);
 
         return Promise.reject(new Error(msg))
-      } else if (code === 2001 || code === null) {
+      } else if (code === 2001) {
 
         // auth接口，返回msg
         return Promise.reject(new Error(msg))
-      } else if (code) {
+      } else if (code || code === null) {
 
         // 其他接口返回错误代码
         Message({

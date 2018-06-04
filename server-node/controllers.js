@@ -35,7 +35,7 @@ const outer = (req, res, next) => {
       service
         .logout(req, res)
         .then(data => res.json(code(req, 0, data)))
-        .catch(err => res.json(code(req, 1001, err)))
+        .catch(err => res.json(code(req, 1002, err)))
     } else {
       next()
     }
