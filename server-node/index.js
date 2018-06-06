@@ -15,6 +15,8 @@ sysLog.info(new Date())
 
 // 启动缓存链接
 db.redisct()
+// 启动数据库链接
+db.connect()
 
 // 启动路由及端口处理
 const app = express()

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Breadcrumb, Button, Dialog, Form, Input } from 'element-react';
+import { Breadcrumb, Button, Dialog, Form, Input, Table, Message, Popover } from 'element-react';
+// import Qs from 'query-string';
+import Request from '@/common/request';
 
 import './dashboard.scss';
 
@@ -10,23 +12,100 @@ class Dashboard extends Component {
     this.state = {
       addDialog: false,
 
-      root: '/server-node/data-json/',
+      fetchLoading: false,
+      addLoading: false,
+      delLoading: '',
+      popovering: '',
 
+      root: '/',
+
+      folderColumns: [
+        {
+          type: 'expand',
+          expandPannel: data => {
+            return (
+              data.regexps.map((regexp, index) => {
+                return (
+                  <div
+                    key={regexp.key}
+                  >{index}: {regexp.value}</div>
+                )
+              })
+            )
+          },
+        },
+        { label: '模块名称', prop: 'projectName' },
+        { label: '目录名称', prop: 'folderName' },
+        { label: '目录地址', prop: 'address' },
+        {
+          label: '操作',
+          render: data => {
+            return (
+              <span
+                key={data._id}>
+                <Button
+                  plain={true}
+                  type="info"
+                  size="small"
+                  onClick={this.openDialog.bind(this, data)}
+                >编辑</Button>
+
+                <Popover
+                  key={data._id}
+                  placement="top"
+                  width="160"
+                  trigger="hover"
+                  visible={this.state.popovering === data._id}
+                  content={(
+                    <div>
+                      <p>确定删除吗？</p>
+                      <div
+                        className="pop-in-btn">
+                        <Button
+                          size="mini"
+                          type="text"
+                          onClick={this.closePopover.bind(this)}
+                        >取消</Button>
+                        <Button
+                          type="danger"
+                          size="mini"
+                          onClick={this.folderDel.bind(this, data._id)}
+                        >确定</Button>
+                      </div>
+                    </div>
+                  )}
+                >
+                  <Button
+                    loading={this.delLoading === data._id}
+                    className="pop-out-btn"
+                    type="danger"
+                    size="small"
+                    onClick={this.openPopover.bind(this, data._id)}
+                  >删除</Button>
+                </Popover>
+              </span>
+            )
+          },
+        },
+      ],
       folderList: [],
 
       addinfo: {
-        project: '',
+        projectName: '',
         folderName: '',
         address: '',
-        regexps: [],
+        regexps: [{
+          key: Date.now(),
+          value: '',
+        }],
       },
       addinfoReset: {},
       addregexp: {
         key: '',
-        value: ''
+        value: '',
       },
       addrules: {
-        project: [
+        projectName: [
           { required: true, message: '请填写', trigger: 'blur change' },
         ],
         folderName: [
@@ -37,19 +116,51 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
+    this.fetchList();
     const addinfoReset = JSON.parse(JSON.stringify(this.state.addinfo));
     this.setState({
       addinfoReset,
     });
   }
 
-  openDialog() {
+  async fetchList() {
+    if (this.state.fetchLoading) return;
+
     this.setState({
-      addDialog: true,
+      fetchLoading: true,
+    });
+
+    let folderList = [];
+    try {
+      folderList = await Request('/inner/dashboard/folderList');
+    } catch (err) {
+      console.log(err);
+      this.setState({
+        fetchLoading: false,
+      });
+      return;
+    }
+
+    this.setState({
+      fetchLoading: false,
+      folderList,
     });
   }
 
-  closeDialog() {
+  openDialog(data, e) {
+    e.preventDefault();
+
+    const openData = {
+      addDialog: true,
+    }
+
+    if (data) openData.addinfo = JSON.parse(JSON.stringify(data));
+    this.setState(openData);
+  }
+
+  closeDialog(e) {
+    if (e) e.preventDefault();
+
     this.refs.addinfo.resetFields();
     const addinfo = JSON.parse(JSON.stringify(this.state.addinfoReset));
 
@@ -73,7 +184,7 @@ class Dashboard extends Component {
     e.preventDefault();
 
     this.state.addinfo.regexps.push({
-      key: this.state.addinfo.regexps.length,
+      key: Date.now(),
       value: '',
     });
     this.forceUpdate();
@@ -95,10 +206,100 @@ class Dashboard extends Component {
     }
   }
 
-  async onSubmit(e) {
+  closePopover(e) {
+    if (e) e.preventDefault();
+
+    this.setState({
+      popovering: '',
+    });
+  }
+
+  openPopover(id, e) {
     e.preventDefault();
 
+    this.setState({
+      popovering: id,
+    });
+  }
+
+  async folderUpdate(e) {
+    e.preventDefault();
+
+    if (this.state.addLoading) return;
+
+    try {
+      await new Promise((resolve, reject) => {
+        this.refs.addinfo.validate(
+          result => result
+            ? resolve()
+            : reject()
+          );
+      });
+    } catch (err) {
+      console.log(err);
+      return;
+    }
+
+    this.setState({
+      addLoading: true,
+    });
+
+    let postData = JSON.parse(JSON.stringify(this.state.addinfo));
+    try {
+      await Request('/inner/dashboard/folderAdd', postData);
+    } catch (err) {
+      console.log(err);
+      this.setState({
+        addLoading: false,
+      });
+      return;
+    }
+
+    this.setState({
+      addLoading: false,
+    });
+
     this.closeDialog();
+    this.fetchList();
+  }
+
+  async folderDel(id, e) {
+    e.preventDefault();
+
+    this.closePopover();
+
+    if (!id) {
+      Message({
+        type: 'warning',
+        message: '请选择要删除的数据',
+        duration: 2000,
+      });
+      return;
+    }
+
+    if (this.state.delLoading === id) return;
+
+    this.setState({
+      delLoading: id,
+    });
+
+    try {
+      await Request('/inner/dashboard/folderDel', {
+        _id: id,
+      });
+    } catch (err) {
+      console.log(err);
+      this.setState({
+        delLoading: '',
+      });
+      return;
+    }
+
+    this.setState({
+      delLoading: '',
+    });
+
+    this.fetchList();
   }
 
   render() {
@@ -112,9 +313,16 @@ class Dashboard extends Component {
 
         <div className="top-btns-bar">
           <Button
+            loading={this.state.fetchLoading}
             type="primary"
             size="small"
-            onClick={this.openDialog.bind(this)}
+            onClick={this.fetchList.bind(this)}
+          >刷新</Button>
+
+          <Button
+            type="primary"
+            size="small"
+            onClick={this.openDialog.bind(this, '')}
           >新增日志目录</Button>
         </div>
 
@@ -136,10 +344,10 @@ class Dashboard extends Component {
 
               <Form.Item
                 label="模块名称"
-                prop="project">
+                prop="projectName">
                 <Input
-                  value={this.state.addinfo.project}
-                  onChange={this.onSettingChange.bind(this, 'project')} />
+                  value={this.state.addinfo.projectName}
+                  onChange={this.onSettingChange.bind(this, 'projectName')} />
               </Form.Item>
 
               <Form.Item
@@ -150,11 +358,19 @@ class Dashboard extends Component {
                   onChange={this.onSettingChange.bind(this, 'folderName')} />
               </Form.Item>
 
+              <Form.Item
+                label="目录地址"
+                prop="address">
+                <Input
+                  value={this.state.addinfo.address}
+                  onChange={this.onSettingChange.bind(this, 'address')} />
+              </Form.Item>
+
               {
                 this.state.addinfo.regexps.map((regexp, index) => {
                   return (
                     <Form.Item
-                      key={index}
+                      key={regexp.key}
                       label={`正则${index}`}
                       prop={`regexps:${index}`}
                       rules={{
@@ -174,10 +390,13 @@ class Dashboard extends Component {
                         type="textarea"
                         autosize={true}
                         onChange={this.onRegexpChange.bind(this, index)} />
-                      <Button
-                        type="danger"
-                        onClick={this.removeRegexp.bind(this, regexp)}
-                      >删除</Button>
+
+                      {index > 0 &&
+                        <Button
+                          type="danger"
+                          onClick={this.removeRegexp.bind(this, regexp)}
+                        >删除</Button>
+                      }
                     </Form.Item>
                   )
                 })
@@ -197,15 +416,23 @@ class Dashboard extends Component {
           <Dialog.Footer className="dialog-footer">
 
             <Button
+              loading={this.state.addLoading}
               onClick={this.closeDialog.bind(this)}
             >取消</Button>
+
             <Button
+              loading={this.state.addLoading}
               type="primary"
-              onClick={this.onSubmit.bind(this)}
+              onClick={this.folderUpdate.bind(this)}
             >确定</Button>
 
           </Dialog.Footer>
         </Dialog>
+
+        <Table
+          columns={this.state.folderColumns}
+          data={this.state.folderList}
+          border={true} />
       </div>
     )
   }

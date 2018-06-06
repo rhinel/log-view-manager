@@ -14,6 +14,7 @@ const platformCodeApiErrorLog = log4js.getLogger('platformCodeApiError')
 
 // 系统模块
 const service = require('./services')
+const serviceDash = require('./services-dash')
 
 // res.json([req.params,req.query,req.body])
 // res.json([req.params==url,req.query==get,req.body==post])
@@ -23,6 +24,7 @@ const service = require('./services')
 const outer = (req, res, next) => {
   outerApiLog.info('Outer-POST', req.url)
   req.typeApi = 'outerApi'
+
   // 登陆类
   if (req.params.class === 'log') {
     req.typeApi = 'login'
@@ -67,22 +69,37 @@ const inner = (req, res, next) => {
   if (req.params.class === 'auth') {
     delete req.typeApi
     res.json(code(req, 0))
+
   } else if (req.params.class === 'dashboard') {
-    if (req.params.function === 'index') {
-      // dashboard
-      //   .index(req, res)
-      //   .then(data => res.json(code(req, 0, data)))
-      //   .catch(err => res.json(code(req, 3001, err)))
+    if (req.params.function === 'folderAdd') {
+      serviceDash
+        .folderAdd(req, res)
+        .then(data => res.json(code(req, 0, data)))
+        .catch(err => res.json(code(req, 3001, err)))
+    } else if (req.params.function === 'folderList') {
+      serviceDash
+        .folderList(req, res)
+        .then(data => res.json(code(req, 0, data)))
+        .catch(err => res.json(code(req, 3002, err)))
+    }  else if (req.params.function === 'folderDel') {
+      serviceDash
+        .folderDel(req, res)
+        .then(data => res.json(code(req, 0, data)))
+        .catch(err => res.json(code(req, 3003, err)))
     } else {
       next()
     }
+
   } else {
     next()
   }
 }
 
 // default类，最后返回
-const def = (req, res) => res.json(code(req, 9999))
+const def = (req, res) => {
+  delete req.typeApi
+  res.json(code(req, 9999))
+}
 
 module.exports = {
   outer,

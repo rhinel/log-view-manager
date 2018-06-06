@@ -9,7 +9,7 @@ module.exports = {
   login: async req => {
     // 校验字段，错误退出
     // 0根据MD5(IP，用户名，密码，时间)生成token
-    // 1查询数据库用户名密码，错误退出
+    // 1查询用户名密码，错误退出
     // 2查出登陆缓存
     // 3失效旧缓存，写入缓存新token
     // 4返回token
@@ -31,7 +31,7 @@ module.exports = {
       await Promise.reject(new FoundError('用户名/密码错误超过5次，请等待5分钟后再次登陆'))
     }
 
-    // 2数据库查询用户名和密码校验
+    // 2查询用户名和密码校验
     const dbInfo = require('./auth.json')
 
     // 账号密码错误次数5分钟300秒机制，成功清除错误记录

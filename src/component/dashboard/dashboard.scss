@@ -6,4 +6,14 @@
       margin-right: 9px;
     }
   }
+
+  .el-table {
+    width: 100%;
+    margin-top: 14px;
+  }
+
+  .el-table,
+  .el-table__body-wrapper {
+    overflow: unset;
+  }
 }
