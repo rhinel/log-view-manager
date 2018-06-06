@@ -2,7 +2,7 @@ const log4js = require('log4js')
 const mongoose = require('mongoose')
 const redis = require('redis')
 
-const auth = require('./auth-models')
+const auth = require('./auth-json/auth-models')
 
 let rds
 let db

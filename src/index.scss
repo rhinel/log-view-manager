@@ -39,15 +39,17 @@ textarea {
 .inner-page-wrap > .inner {
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 20px 20px 20px;
+  box-sizing: border-box;
 }
 
 .breadcrumb {
-  padding: 14px;
+  padding: 14px 0;
   border-bottom: 1px solid #EFF2F7;
 }
 
 .top-btns-bar {
-  padding: 14px;
+  padding: 14px 0;
   border-bottom: 1px solid #EFF2F7;
 }
 

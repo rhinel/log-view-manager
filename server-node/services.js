@@ -32,7 +32,7 @@ module.exports = {
     }
 
     // 2查询用户名和密码校验
-    const dbInfo = require('./auth.json')
+    const dbInfo = require('./auth-json/auth.json')
 
     // 账号密码错误次数5分钟300秒机制，成功清除错误记录
     if (dbInfo.name !== req.body.name || dbInfo.pwd !== req.body.pwd) {
