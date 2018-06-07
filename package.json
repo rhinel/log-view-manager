@@ -10,6 +10,7 @@
     "babel-loader": "7.1.2",
     "babel-preset-react-app": "^3.1.1",
     "babel-runtime": "6.26.0",
+    "body-parser": "^1.18.3",
     "case-sensitive-paths-webpack-plugin": "2.1.1",
     "chalk": "1.1.3",
     "css-loader": "0.28.7",
@@ -24,24 +25,32 @@
     "eslint-plugin-import": "2.8.0",
     "eslint-plugin-jsx-a11y": "5.1.1",
     "eslint-plugin-react": "7.4.0",
+    "express": "^4.16.3",
     "extract-text-webpack-plugin": "3.0.2",
     "file-loader": "1.1.5",
     "fs-extra": "3.0.1",
     "html-webpack-plugin": "2.29.0",
     "jest": "20.0.4",
+    "log4js": "^2.8.0",
     "md5": "^2.2.1",
+    "mongoose": "^5.1.3",
     "node-sass": "^4.9.0",
     "object-assign": "4.1.1",
     "postcss-flexbugs-fixes": "3.2.0",
     "postcss-loader": "2.0.8",
     "promise": "8.0.1",
+    "query-string": "^6.1.0",
     "raf": "3.4.0",
     "react": "^16.4.0",
     "react-dev-utils": "^5.0.1",
     "react-dom": "^16.4.0",
+    "react-router-dom": "^4.2.2",
+    "redis": "^2.8.0",
     "resolve": "1.6.0",
     "sass-loader": "^7.0.1",
     "style-loader": "0.19.0",
+    "superagent": "^3.8.3",
+    "supervisor": "^0.12.0",
     "sw-precache-webpack-plugin": "0.11.4",
     "url-loader": "0.6.2",
     "webpack": "3.8.1",
@@ -51,7 +60,14 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
-    "build": "node scripts/build.js"
+    "build": "node scripts/build.js",
+    "serve": "supervisor -w server-node server-node/index.js"
+  },
+  "proxy": {
+    "^/api": {
+      "target": "http://localhost",
+      "changeOrigin": true
+    }
   },
   "jest": {
     "collectCoverageFrom": [

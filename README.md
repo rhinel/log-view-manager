@@ -13,6 +13,9 @@ yarn
 # serve with hot reload at localhost:3000
 yarn start
 
+# for api server at localhost:80
+yarn serve
+
 # build for production with minification
 yarn build
 

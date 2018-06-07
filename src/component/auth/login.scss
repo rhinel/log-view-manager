@@ -1,7 +1,7 @@
-.main-wrap {
-  height: 100%;
-  width: 100%;
-  background-image: url("./assets/bay-beach-clouds.jpg");
+.login-wrap {
+  min-width: 100vh;
+  min-height: 100vh;
+  background-image: url("../../assets/bay-beach-clouds.jpg");
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -9,7 +9,7 @@
   position: relative;
 }
 
-.login-wrap {
+.login-card {
   width: 500px;
   max-width: 90%;
   position: absolute;

@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'element-theme-default';
-import './index.scss';
-import App from './App';
-import registerServiceWorker from './registerServiceWorker';
+import '@/index.scss';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import { Root } from '@/router';
+
+import registerServiceWorker from '@/registerServiceWorker';
+
+ReactDOM.render(<Root />, document.getElementById('root'));
 registerServiceWorker();
