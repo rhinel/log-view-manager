@@ -1,6 +1,6 @@
 import Superagent from 'superagent';
 import { Message } from 'element-react';
-import CreateHistory from 'history/createBrowserHistory';
+import CreateHistory from 'history/createHashHistory';
 
 import c from './config';
 
@@ -44,7 +44,9 @@ const Request = (path, body) => {
         })
 
         CreateHistory()
-          .push(`/login?backurl=${encodeURIComponent(window.location.pathname)}`);
+          .push(`/login?backurl=${encodeURIComponent(
+            window.location.hash.replace('#', '')
+          )}`);
 
         return Promise.reject(new Error(msg))
       } else if (code === 2001) {

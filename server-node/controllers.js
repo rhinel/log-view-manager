@@ -1,8 +1,4 @@
 const log4js = require('log4js')
-const FoundError = require('./config-error')
-
-// 认证信息
-const SysAuth = require('./auth')
 
 // 日志转换
 const code = require('./config-codes')
@@ -10,7 +6,6 @@ const code = require('./config-codes')
 // 日志记录
 const outerApiLog = log4js.getLogger('outerApi')
 const innerApiLog = log4js.getLogger('innerApi')
-const platformCodeApiErrorLog = log4js.getLogger('platformCodeApiError')
 
 // 系统模块
 const service = require('./services')

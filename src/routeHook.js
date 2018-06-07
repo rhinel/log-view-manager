@@ -19,7 +19,7 @@ const RouteHookLogin = (loginComponent) => {
     }
 
     async componentDidMount() {
-      // console.log('login', RoutePathname, window.location.pathname);
+      // console.log('login', RoutePathname, this.props.location.pathname);
       await this.checkAuth();
 
       loginComponent.displayName = 'RouteHookAuthLogin';
@@ -31,11 +31,11 @@ const RouteHookLogin = (loginComponent) => {
 
     async checkAuth() {
       // 如果是相同地址，则不给权限
-      if (RoutePathname === window.location.pathname) {
+      if (RoutePathname === this.props.location.pathname) {
         return;
       }
 
-      RoutePathname = window.location.pathname;
+      RoutePathname = this.props.location.pathname;
 
       // 如果没有token，则不给权限
       const token = localStorage.getItem(`${C.Storage}token`);
@@ -64,7 +64,7 @@ const RouteHookLogin = (loginComponent) => {
         return <Component {...this.props} />;
       } else if (auth && Component) {
         let innerPath;
-        const search = Qs.parse(window.location.search);
+        const search = Qs.parse(this.props.location.search);
         if (search.backurl) {
           innerPath = search.backurl;
           RoutePathname = innerPath.split('#')[0].split('?')[0];
@@ -94,7 +94,7 @@ const RouteHookAuth = (underAuthComponent) => {
     }
 
     async componentDidMount() {
-      // console.log('auth', RoutePathname, window.location.pathname);
+      // console.log('auth', RoutePathname, this.props.location.pathname);
       await this.checkAuth();
 
       underAuthComponent.displayName = 'RouteHookAuthDom';
@@ -106,8 +106,8 @@ const RouteHookAuth = (underAuthComponent) => {
 
     async checkAuth() {
       // 如果地址不相同，进入校验，否则直接给权限
-      if (RoutePathname !== window.location.pathname) {
-        RoutePathname = window.location.pathname;
+      if (RoutePathname !== this.props.location.pathname) {
+        RoutePathname = this.props.location.pathname;
 
         // 如果没有token，则不给权限
         const token = localStorage.getItem(`${C.Storage}token`);
@@ -150,7 +150,9 @@ const RouteHookAuth = (underAuthComponent) => {
       } else if (!auth && Component) {
         const loginPath = {
           pathname: '/login',
-          search: `?backurl=${encodeURIComponent(window.location.pathname)}`,
+          search: `?backurl=${encodeURIComponent(
+            window.location.hash.replace('#', '')
+          )}`,
         };
         return <Redirect to={loginPath} />;
       }
