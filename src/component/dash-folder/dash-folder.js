@@ -60,7 +60,7 @@ class DashFolder extends Component {
             type: 'expand',
             expandPannel: data => {
               return (
-                <div>
+                <div className="expand-wrap">
                   <div>{columnInfo[0]}: </div>
                   <div dangerouslySetInnerHTML={{ __html: data.input}} />
                 </div>

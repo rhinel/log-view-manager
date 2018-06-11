@@ -214,7 +214,7 @@ class Dashboard extends Component {
 
     this.state.addinfo.regexps.push({
       key: Date.now(),
-      value: '',
+      ...this.state.addregexp,
     });
     this.forceUpdate();
   }
@@ -361,6 +361,7 @@ class Dashboard extends Component {
           customClass="add-dialog"
           visible={this.state.addDialog}
           closeOnClickModal={false}
+          closeOnPressEscape={false}
           lockScroll={false}
           onCancel={this.closeDialog.bind(this)}>
           <Dialog.Body>

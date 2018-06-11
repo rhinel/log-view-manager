@@ -12,4 +12,11 @@
     white-space: nowrap;
     text-overflow: ellipsis;
   }
+
+  .el-table .expand-wrap {
+    div {
+      word-break: break-all;
+      white-space: pre-wrap;
+    }
+  }
 }
