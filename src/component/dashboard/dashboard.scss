@@ -1,8 +1,18 @@
 .dashboard {
   .add-dialog {
-    .el-input,
-    .el-textarea {
+    .el-input{
       max-width: 450px;
+      margin-right: 9px;
+    }
+
+    .el-select {
+      width: 100%;
+      max-width: 144px;
+      margin-right: 9px;
+    }
+
+    .el-textarea {
+      max-width: 144px;
       margin-right: 9px;
     }
   }

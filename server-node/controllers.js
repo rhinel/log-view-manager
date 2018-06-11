@@ -76,11 +76,16 @@ const inner = (req, res, next) => {
         .folderList(req, res)
         .then(data => res.json(code(req, 0, data)))
         .catch(err => res.json(code(req, 3002, err)))
-    }  else if (req.params.function === 'folderDel') {
+    } else if (req.params.function === 'folderDel') {
       serviceDash
         .folderDel(req, res)
         .then(data => res.json(code(req, 0, data)))
         .catch(err => res.json(code(req, 3003, err)))
+    } else if (req.params.function === 'dataList') {
+      serviceDash
+        .dataList(req, res)
+        .then(data => res.json(code(req, 0, data)))
+        .catch(err => res.json(code(req, 3004, err)))
     } else {
       next()
     }

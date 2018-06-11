@@ -1,6 +1,8 @@
 const FoundError = require('./config-error')
 const db = require('./models')
 
+const fs = require('fs')
+
 module.exports = {
 
   // folderAdd - 添加方法
@@ -17,6 +19,7 @@ module.exports = {
           projectName: String,      // 项目名称
           folderName: String,       // 目录名称
           address: String,          // 目录地址
+          showColumns: String,      // 正则后表头，用|分割
           regexps: Array,           // 正则列表
           updateTime: Date,         // 更新时间
         })
@@ -24,6 +27,7 @@ module.exports = {
           projectName: req.body.projectName,
           folderName: req.body.folderName,
           address: req.body.address,
+          showColumns: req.body.showColumns,
           regexps: req.body.regexps,
           updateTime: Date.now(),
         })
@@ -42,6 +46,7 @@ module.exports = {
         projectName: String,      // 项目名称
         folderName: String,       // 目录名称
         address: String,          // 目录地址
+        showColumns: String,      // 正则后表头，用|分割
         regexps: Array,           // 正则列表
         status: Number,           // 状态
         createTime: Date,         // 新建时间
@@ -50,6 +55,7 @@ module.exports = {
         projectName: req.body.projectName,
         folderName: req.body.folderName,
         address: req.body.address,
+        showColumns: req.body.showColumns,
         regexps: req.body.regexps,
         status: 1,
         createTime: Date.now(),
@@ -108,4 +114,66 @@ module.exports = {
     return { _id: req.body._id }
   },
 
+  // dataList - 目录正则后数据
+  dataList: async req => {
+    // 根据ID查询数据
+    // 获取日志文件
+    // 直接正则并返回
+
+    if (!req.body._id) {
+      return Promise.reject(new FoundError('缺少ID'))
+    }
+
+    // 1查询
+    const folder = await db
+      .dbModel('folders')
+      .findOne({
+        _id: req.body._id,
+        status: 1,
+      })
+      .lean()
+      .exec()
+
+    if (!folder || !folder.status) {
+      return Promise.reject(new FoundError('无此目录或目录已删除'))
+    }
+
+    // 2获取日志文件
+    const address = folder.address
+
+    const dataFileList = fs.readdirSync(address)
+
+    const dataList = {}
+
+     dataFileList.map(file => {
+      let dataFile = fs.readFileSync(address + file, 'utf-8')
+
+      folder.regexps.forEach(regexp => {
+        if (regexp.type === 'split') {
+          dataFile = dataFile
+            .split(new RegExp(regexp.value))
+        } else if (regexp.type === 'map-replace') {
+          dataFile = dataFile
+            .map(_ => _.replace(new RegExp(regexp.value), regexp.toValue))
+        } else if (regexp.type === 'map-match') {
+          dataFile = dataFile
+            .map(_ => {
+              const line = { ..._.match(new RegExp(regexp.value)) }
+              line.input = line.input.replace(/\n/g, '<br>')
+              line.input = line.input.replace(/\s/g, '&nbsp;')
+              return line
+            })
+        } else if (regexp.type === 'reverse') {
+          dataFile.reverse()
+        }
+      })
+
+      dataList[file] = dataFile
+    })
+
+    return {
+      folder,
+      dataList,
+    }
+  },
 }
