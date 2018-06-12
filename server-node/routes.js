@@ -29,12 +29,15 @@ module.exports = (app, express) => {
   })
 
   // 处理页面, 动态加载
-  app.use('/', express.static(path.resolve(__dirname, '../static')))
-  app.use('/static', express.static(path.resolve(__dirname, '../dist/static')))
+  app.use('/', express.static(path.resolve(__dirname, '../public')))
+  app.use('/static', express.static(path.resolve(__dirname, '../build/static')))
   app.use('/404', express.static(path.resolve(__dirname, '../404')))
   app.get('*', (req, res) => {
-    if (req.hostname && req.hostname === 'log.fantasy-nations.cn') {
-      res.send(fs.readFileSync(path.resolve('../dist/index.html'), 'utf-8'))
+    if (
+      (req.hostname && req.hostname === 'log.fantasy-nations.cn')
+        || (req.hostname && req.hostname === 'log.rent-manager.cn')
+      ) {
+      res.send(fs.readFileSync(path.resolve('../build/index.html'), 'utf-8'))
     } else {
       res.send(fs.readFileSync(path.resolve('../404/404.html'), 'utf-8'))
     }
