@@ -162,6 +162,7 @@ module.exports = {
           dataFile = dataFile
             .map(_ => {
               const line = { ..._.match(new RegExp(regexp.value)) }
+              if (!line.input) return line
               line.input = line.input.replace(/\n/g, '<br>')
               line.input = line.input.replace(/\s/g, '&nbsp;')
               return line
