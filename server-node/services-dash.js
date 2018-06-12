@@ -3,6 +3,8 @@ const db = require('./models')
 
 const fs = require('fs')
 
+const isLocal = process.argv[2] === 'server'
+
 module.exports = {
 
   // folderAdd - 添加方法
@@ -139,6 +141,7 @@ module.exports = {
     }
 
     // 2获取日志文件
+    const rootPath = isLocal ? '/gitcode/' : ''
     const address = folder.address
 
     const dataFileList = fs.readdirSync(address)
@@ -146,7 +149,7 @@ module.exports = {
     const dataList = {}
 
      dataFileList.map(file => {
-      let dataFile = fs.readFileSync(address + file, 'utf-8')
+      let dataFile = fs.readFileSync(rootPath + address + file, 'utf-8')
 
       folder.regexps.forEach(regexp => {
         if (regexp.type === 'split') {

@@ -11,5 +11,6 @@ docker run \
  --expose 443 \
  -v /etc/localtime:/etc/localtime \
  -v ~/gitcode/log-view-manager:/webapp \
+ -v ~/gitcode/:/gitcode \
  -w /webapp/server-node \
- -d node node index
+ -d node node index server
