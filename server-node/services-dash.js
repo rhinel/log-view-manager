@@ -149,7 +149,7 @@ module.exports = {
     const dataList = {}
 
      dataFileList.map(file => {
-      let dataFile = fs.readFileSync(address + file, 'utf-8')
+      let dataFile = fs.readFileSync(rootPath + address + file, 'utf-8')
 
       folder.regexps.forEach(regexp => {
         if (regexp.type === 'split') {
