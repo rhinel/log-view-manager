@@ -1,0 +1,22 @@
+.dash-folder {
+  .el-select {
+    margin-left: 9px;
+    vertical-align: top;
+
+    input {
+      height: 28px;
+    }
+  }
+
+  .el-table .cell {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .el-table .expand-wrap {
+    div {
+      word-break: break-all;
+      white-space: pre-wrap;
+    }
+  }
+}

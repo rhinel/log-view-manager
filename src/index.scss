@@ -23,6 +23,11 @@ textarea {
   color: inherit;
 }
 
+a {
+  color: unset;
+  text-decoration: none;
+}
+
 .el-textarea textarea {
   min-height: 36px;
 }

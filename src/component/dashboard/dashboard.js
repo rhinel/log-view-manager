@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Breadcrumb, Button, Dialog, Form, Input, Table, Message, Popover } from 'element-react';
-// import Qs from 'query-string';
+import { withRouter as WithRouter, Link } from 'react-router-dom';
+import { Breadcrumb, Button, Dialog, Form,
+  Input, Table, Message, Popover, Select } from 'element-react';
 import Request from '@/common/request';
 
 import './dashboard.scss';
@@ -17,8 +18,6 @@ class Dashboard extends Component {
       delLoading: '',
       popovering: '',
 
-      root: '/',
-
       folderColumns: [
         {
           type: 'expand',
@@ -29,16 +28,30 @@ class Dashboard extends Component {
                   <div
                     key={regexp.key}
                   >{index}: {regexp.value}</div>
-                )
+                );
               })
-            )
+            );
           },
         },
-        { label: '模块名称', prop: 'projectName' },
-        { label: '目录名称', prop: 'folderName' },
+        { label: '模块名称', prop: 'projectName', width: 150 },
+        {
+          label: '目录名称',
+          prop: 'folderName',
+          width: 150,
+          render: data => {
+            return (
+              <Button type="text">
+                <Link
+                  to={`/inner/dashboard/${data._id}`}
+                >{data.folderName}</Link>
+              </Button>
+            );
+          }
+        },
         { label: '目录地址', prop: 'address' },
         {
           label: '操作',
+          width: 135,
           render: data => {
             return (
               <span
@@ -84,7 +97,7 @@ class Dashboard extends Component {
                   >删除</Button>
                 </Popover>
               </span>
-            )
+            );
           },
         },
       ],
@@ -94,21 +107,37 @@ class Dashboard extends Component {
         projectName: '',
         folderName: '',
         address: '',
+        showColumns: '',
         regexps: [{
           key: Date.now(),
+          type: '',
           value: '',
+          toValue: '',
         }],
       },
       addinfoReset: {},
       addregexp: {
-        key: '',
+        type: '',
         value: '',
+        toValue: '',
       },
+      regexpTypeList: [
+        'split',
+        'map-replace',
+        'map-match',
+        'reverse',
+      ],
       addrules: {
         projectName: [
           { required: true, message: '请填写', trigger: 'blur change' },
         ],
         folderName: [
+          { required: true, message: '请填写', trigger: 'blur change' },
+        ],
+        address: [
+          { required: true, message: '请填写', trigger: 'blur change' },
+        ],
+        showColumns: [
           { required: true, message: '请填写', trigger: 'blur change' },
         ],
       },
@@ -185,14 +214,14 @@ class Dashboard extends Component {
 
     this.state.addinfo.regexps.push({
       key: Date.now(),
-      value: '',
+      ...this.state.addregexp,
     });
     this.forceUpdate();
   }
 
-  onRegexpChange(index, value) {
+  onRegexpChange(index, key, value) {
     // eslint-disable-next-line react/no-direct-mutation-state
-    this.state.addinfo.regexps[index].value = value;
+    this.state.addinfo.regexps[index][key] = value;
     this.forceUpdate();
   }
 
@@ -332,6 +361,7 @@ class Dashboard extends Component {
           customClass="add-dialog"
           visible={this.state.addDialog}
           closeOnClickModal={false}
+          closeOnPressEscape={false}
           lockScroll={false}
           onCancel={this.closeDialog.bind(this)}>
           <Dialog.Body>
@@ -366,6 +396,14 @@ class Dashboard extends Component {
                   onChange={this.onSettingChange.bind(this, 'address')} />
               </Form.Item>
 
+              <Form.Item
+                label="列名称(|)"
+                prop="showColumns">
+                <Input
+                  value={this.state.addinfo.showColumns}
+                  onChange={this.onSettingChange.bind(this, 'showColumns')} />
+              </Form.Item>
+
               {
                 this.state.addinfo.regexps.map((regexp, index) => {
                   return (
@@ -377,19 +415,46 @@ class Dashboard extends Component {
                         type: 'object',
                         required: true,
                         fields: {
+                          type: {
+                            required: true,
+                            message: '请选择',
+                            trigger: 'blur change'
+                          },
                           value: {
                             required: true,
                             message: '请填写',
                             trigger: 'blur change'
-                          }
-                        }
+                          },
+                        },
                       }}
                     >
+                      <Select
+                        value={regexp.type}
+                        onChange={this.onRegexpChange.bind(this, index, 'type')}
+                      >
+                        {
+                          this.state.regexpTypeList.map(el => {
+                            return (
+                              <Select.Option
+                                key={el}
+                                label={el}
+                                value={el} />
+                            )
+                          })
+                        }
+                      </Select>
+
                       <Input
                         value={regexp.value}
                         type="textarea"
                         autosize={true}
-                        onChange={this.onRegexpChange.bind(this, index)} />
+                        onChange={this.onRegexpChange.bind(this, index, 'value')} />
+
+                      <Input
+                        value={regexp.toValue}
+                        type="textarea"
+                        autosize={true}
+                        onChange={this.onRegexpChange.bind(this, index, 'toValue')} />
 
                       {index > 0 &&
                         <Button
@@ -398,7 +463,7 @@ class Dashboard extends Component {
                         >删除</Button>
                       }
                     </Form.Item>
-                  )
+                  );
                 })
               }
 
@@ -439,4 +504,4 @@ class Dashboard extends Component {
 
 }
 
-export default Dashboard;
+export default WithRouter(Dashboard);
