@@ -29,7 +29,7 @@ module.exports = (app, express) => {
   })
 
   // 处理页面, 动态加载
-  app.use('/static', express.static(path.resolve(__dirname, '../build/static')))
+  app.use('/', express.static(path.resolve(__dirname, '../build/')))
   app.use('/404', express.static(path.resolve(__dirname, '../404')))
   app.get('*', (req, res) => {
     if (
