@@ -1,6 +1,6 @@
 {
   "name": "log-view-manager",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "private": true,
   "dependencies": {
     "autoprefixer": "7.1.6",

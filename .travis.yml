@@ -1,0 +1,32 @@
+language: node_js
+node_js:
+  - "9"
+
+sudo: required
+
+before_install:
+- openssl aes-256-cbc -K $encrypted_8a56a7e6cc7d_key -iv $encrypted_8a56a7e6cc7d_iv -in TXRsa.enc -out ~/.ssh/id_rsa -d
+- chmod 600 ~/.ssh/id_rsa
+- echo -e "Host 193.112.52.130\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+- echo -e "Host 111.230.174.166\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+
+script:
+  - yarn build
+
+after_success:
+  - tar -jcf build.tar.bz2 build/*
+  - scp build.tar.bz2 root@193.112.52.130:~/;
+  - ssh root@193.112.52.130 "sudo -i mv /root/build.tar.bz2 ./gitcode/log-view-manager/";
+  - ssh root@193.112.52.130 "sudo -i ./gitcode/log-view-manager/autoFetch.sh $TRAVIS_BRANCH";
+  - scp build.tar.bz2 root@111.230.174.166:~/;
+  - ssh root@111.230.174.166 "sudo -i mv /root/build.tar.bz2 ./gitcode/log-view-manager/";
+  - ssh root@111.230.174.166 "sudo -i ./gitcode/log-view-manager/autoFetch.sh $TRAVIS_BRANCH";
+
+addons:
+  ssh_known_hosts:
+    - 193.112.52.130
+    - 111.230.174.166
+
+branches:
+  only:
+    - master
