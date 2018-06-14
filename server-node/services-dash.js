@@ -141,42 +141,55 @@ module.exports = {
     }
 
     // 2获取日志文件
+    // 读取目录
     const rootPath = isLocal ? '/gitcode/' : '../'
     const address = folder.address
 
     const dataFileList = fs.readdirSync(rootPath + address)
 
-    const dataList = {}
+    const { dataKeySelect } = req.body
 
-     dataFileList.map(file => {
-      let dataFile = fs.readFileSync(rootPath + address + file, 'utf-8')
+    // 不存在选择直接返回空
+    if (dataKeySelect && !dataFileList.includes(dataKeySelect)) {
+      return {
+        folder,
+        dataFileList,
+        dataList: [],
+      }
+    }
 
-      folder.regexps.forEach(regexp => {
-        if (regexp.type === 'split') {
-          dataFile = dataFile
-            .split(new RegExp(regexp.value))
-        } else if (regexp.type === 'map-replace') {
-          dataFile = dataFile
-            .map(_ => _.replace(new RegExp(regexp.value), regexp.toValue))
-        } else if (regexp.type === 'map-match') {
-          dataFile = dataFile
-            .map(_ => {
-              const line = { ..._.match(new RegExp(regexp.value)) }
-              if (!line.input) return line
-              line.input = line.input.replace(/\n/g, '<br>')
-              line.input = line.input.replace(/\s/g, '&nbsp;')
-              return line
-            })
-        } else if (regexp.type === 'reverse') {
-          dataFile.reverse()
-        }
-      })
+    // 读取选择或者第一个数据
+    const file = dataKeySelect || dataFileList[0];
 
-      dataList[file] = dataFile
+    let dataFile = fs.readFileSync(rootPath + address + file, 'utf-8')
+
+    folder.regexps.forEach(regexp => {
+      if (regexp.type === 'split') {
+        dataFile = dataFile
+          .split(new RegExp(regexp.value))
+      } else if (regexp.type === 'map-replace') {
+        dataFile = dataFile
+          .map(_ => _.replace(new RegExp(regexp.value), regexp.toValue))
+      } else if (regexp.type === 'map-match') {
+        dataFile = dataFile
+          .map(_ => {
+            const line = { ..._.match(new RegExp(regexp.value)) }
+            if (!line.input) return line
+            line.input = line.input.replace(/\n/g, '<br>')
+            line.input = line.input.replace(/\s/g, '&nbsp;')
+            return line
+          })
+      } else if (regexp.type === 'reverse') {
+        dataFile.reverse()
+      }
     })
+
+    // 组成数据返回
+    const dataList = dataFile;
 
     return {
       folder,
+      dataFileList,
       dataList,
     }
   },
