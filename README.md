@@ -27,4 +27,8 @@ yarn build
 
 <p align="center">
   <img src="https://user-images.githubusercontent.com/12730596/41387048-6bac6058-6fb7-11e8-8c05-4378e8e297af.jpg" width="700px">
+
+  <br>
+
+  <img src="https://user-images.githubusercontent.com/12730596/41387167-11363134-6fb8-11e8-915c-93d91122c4df.png" width="700px">
 </p>
