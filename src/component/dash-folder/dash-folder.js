@@ -26,7 +26,7 @@ class DashFolder extends Component {
     this.fetchList();
   }
 
-  async fetchList() {
+  async fetchList(value) {
     if (this.state.fetchLoading) return;
 
     this.setState({
@@ -36,13 +36,16 @@ class DashFolder extends Component {
     let dataList = {};
     let folder = {};
     let dataKeyList = [];
+    let dataKeySelect = value;
+
     try {
       const data = await Request('/inner/dashboard/dataList', {
         _id: this.props.match.params.id,
+        dataKeySelect: dataKeySelect || '',
       });
       dataList = data.dataList;
       folder = data.folder;
-      dataKeyList = Object.keys(dataList);
+      dataKeyList = data.dataFileList;
     } catch (err) {
       console.log(err);
       this.setState({
@@ -51,7 +54,8 @@ class DashFolder extends Component {
       return;
     }
 
-    const dataKeySelect = dataKeyList[0] || '';
+    if (!dataKeySelect) dataKeySelect = dataKeyList[0] || '';
+
     const showColumns = folder.showColumns
       .split('|').map((columns, cIndex) => {
         const columnInfo = columns.split('-');
@@ -78,8 +82,7 @@ class DashFolder extends Component {
 
         return columnObject;
       });
-    const showList = dataKeySelect
-        ? dataList[dataKeySelect] : [];
+    const showList = dataList;
 
     this.setState({
       fetchLoading: false,
@@ -93,11 +96,9 @@ class DashFolder extends Component {
   }
 
   onDataSelectChange(value) {
-    if (!value || !this.state.dataList[value]) return;
-    this.setState({
-      dataKeySelect: value,
-      showList: this.state.dataList[value],
-    });
+    if (!value) return;
+
+    this.fetchList(value);
   }
 
   render() {
