@@ -13,12 +13,14 @@ class InnerHeader extends Component {
   }
 
   checkSelect(path) {
+    const { pathname } = this.props.location
     if (
-      this.props.location.pathname === '/inner'
+      pathname === '/inner'
         && path === '/inner/dashboard'
     ) return true;
 
-    return this.props.location.pathname === path;
+    return pathname !== '/inner'
+      && pathname.includes(path);
   }
 
   render() {
