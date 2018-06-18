@@ -24,10 +24,6 @@ after_success:
 - ssh root@$txsl "sudo -i ./gitcode/log-view-manager/autoFetch.sh $TRAVIS_BRANCH";
 
 addons:
-  ssh_known_hosts:
-  - $txsv
-  - $txsl
-
   apt:
   - update: true
 
