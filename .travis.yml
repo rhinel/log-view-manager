@@ -1,19 +1,15 @@
 language: node_js
 node_js:
 - '9'
-
 sudo: required
-
 before_install:
 - openssl aes-256-cbc -K $encrypted_8a56a7e6cc7d_key -iv $encrypted_8a56a7e6cc7d_iv
   -in TXRsa.enc -out ~/.ssh/id_rsa -d
 - chmod 600 ~/.ssh/id_rsa
 - echo -e "Host $txsv\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 - echo -e "Host $txsl\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-
 script:
 - yarn build
-
 after_success:
 - tar -jcf build.tar.bz2 build/*
 - scp build.tar.bz2 root@$txsv:~/;
@@ -22,16 +18,13 @@ after_success:
 - scp build.tar.bz2 root@$txsl:~/;
 - ssh root@$txsl "sudo -i mv /root/build.tar.bz2 ./gitcode/log-view-manager/";
 - ssh root@$txsl "sudo -i ./gitcode/log-view-manager/autoFetch.sh $TRAVIS_BRANCH";
-
 addons:
   apt:
   - update: true
-
 branches:
   only:
   - master
-
 env:
   global:
-  - secure: QQuhHluXaQ1JgufXrNnsHX8SDhw+SRa2O3MYPbUn1uG5jeA4I/3rhDqQyTrKkZQF81Jn4qiqeVm+QC/LkHw5h8HFa03TvKYkVJQlrMUN2dEVSuIIyFfYe5QhuZnKuH00xsOePY73oLLxmLxx2fZA3b0n6fUYeN2rDCFdOwcuLn5kSWAxIW9FjzeLscINsMbcjtmwG1bMz0WVp3KtmPKqnbepix8r+GvFE51brnoU2daarAiLO7jrDyy/Vx5AfwJPTqSUdR1h8ENcBSH6g7aRvLRtGxw2hGq0abwdRr3avobbprYYylSlKmbujUeDEPzu0D29GIVExfcoaNd0Jk0wBdyKU+sDppHVPKDc44ky4Gehm42D5mvmrYcVPfIp/lQKgdD3+w8Z7jZroYtmYuODv53RDJfsjDaa1TCrRUXNu5ZxhvFGKCSPVSnJ5962LqPZn290PIAO+y7gd9KRWTQVtTuCiKGNrLcAgQgzkRWQJK4wpwVgOAadAOyKmUc01AcDgMmzXUkhxNI3WUDAmg1xiQ/lRH8slzLs7I4FY+rZEprNq1I+0FkB2rqE+qStNoS7uFgHxQ/EGtfCzoURrq3N+ywXi2P3SP5TW0Re/KQOrsKuqEKw99RxhLL9KtGyehBfHxayJQibA6uYB0WRZ9jwsvg8Fel1ThUSeZiaKjoXgDI=
-  - secure: iv+3Ji/2DyppGWPYODqAf5mBOxbnldD5LyDb1bvjKz/z9RuAEaubGfPL2foKwfZY0kn9fca5E7ZibE0Tcl2QXGS6mUISd/a6nNxfo8U5x420ml6g6sfaEi8yJxQ+imiKgLguZXGXx3LnAVdmgwIw/BVbZK+W1wKm9wx21ZIHGtGyEAMRyB+4Q3YGHS9KWxgz2JFP09gDpsXEK2pCfWA420t7h7fkHmgnfVDoJuFcQb4bwp8cIsMz6LdopTGC7FpQNyGUVUfxVUROCj4IKp15vDCuyK3CIdrNQvHsTE8pDtV+KZqQAkIIwru13eK542aUDs/XrnhusU6hiSLgZW3vN/Ua7wAIGowo4v07W/pGXVfvz/AyEQvFFxDBx7frxbEAgW+71k9bB61hKRzksxAxxle/jpwnOb1wvOH5FqHUaqlR7BofDVKAP1IVwENhO0uPdgvZtzVER56wnQSx8NMtgKI/Vn9TLGxA9HyFIwZOf48hPvys4A945ODIKSzlkGAM0RTHegUlcbY2KIjkq1kHKjkcGdn7L4BLpsmUPnHkM6K/wqiFh8LDfdOBuDv6j9ImhHZHWBbOpFCi0tytwjFmb9gzooow1gvos7F8AU2dFDESYq3fzY2yHj1/O9AWUa30kS3gzY78AAsB5h6jmh3mdI54JBRi2wJ9HFyMJ2vLdZ4=
+  - secure: sqHb9Je+5UG5/pfL8KE4bJICda9L1cXrT9Bmp0UAghd9+rlAT4znows5pBshLJGLuA/v1tisa2x0Fb3kesAdor6GbV0uayFdY7aRR9uZ+tdWKGB22M2AUmFfdUy9HRnzg7F2/PKeQrjCg5wynDpeIk7gi5MeY4XUb6KJZXbECFtJ96nwoIekVOBHZacqSgjb3z81xVHJxVEn6WSKuQmwI1yxe9trMV2cDmT10Hf1qOFnnhB0TywTcrEfQfjXjZRfe19BScjmSuyXCp5g9S4UVyFUs6wgs/npxSWGQ/yFzMX9WdX6vPippW+7oEDmQSJba3KiiQ368JLuWTQE7dC7waQBTYrbIuS/5ydFCNsqzVBgP1tQ/J+03DoVqB5zhRIpdLlClgbYAFEs3e9cPwy2afJY7zL+DvzKHrIz7I4uqpjuWPeSIYUhuSSJ3+19th6Z4iBQ1VtMAtbLqJIjzbZujG6Yh/F+s8A5A8kzLpXcPni0SP+7vcSJ81mZZZlmPI4g+KDsBAemwg0wA1CP5rVXTawdzqccp11G3FWgyGSPlTBFSJaVmftjmF3O9fObvN98fYrPrTwZxqAY8iGV8e+7HeJauhXB9cp8hxK/z/4NL1meKa8p6PGzcWyT+outXG1Om8GjQMAGB7dayrl2xC1uJ56sO52MKKrTvCpa5vix5gw=
+  - secure: Wwx3Aaef+uwYnqm+R8Pt1jMh0c9cOYaBJEuiarO/KK5sog8SY5oU5G8d53/2xm7H7H7vFupnDa3eGD5jux7KPp42W0gNYG5lpkZKV7UumlRTg+kayhZoj7gFtEwow+AYgWw3CbbAT7XG0i8XG14Jbim8d3XetkiasfWVtBQ1FtUQHDb+g1wXcAXmf6TrxTJnMMk7PKwG/dyYN1/iJ9IcGWOC/foSKILMxSCsBjxBrMsEjaB5oKvHP/bPBBTlu7WdAG8yGd5CWCYli+ebAaHgV4WAuCnKocDHT72fZgY7p0gbQSy9EzbyzWk/eE0bVt6xOoklseE4rd9i+V2NqcI03ygGgjSqniRaQk/lzLfIVDzMIN8La6KL6mV50p+g+gAf2qSCBBxbG44q0O925xUG4gF8TEgU0gDLs+Qm9xDyqzp+dRq2mD6NbRbZIFE/ibDU8uU/+AbrRMFDe3fYFp6gWLWi1VE1wXtHS1M0X+G0hf6D2HDN6vu2wniW7YSg0yDsBTDVI0L5jRBdoGiQ7U4SJnbbAgub+rC1cKfFKro4iMQuhnZZMyP9kgDgW1HUvyiwaarD8cEZ1/GWyAuu3boxdyCudyZwVd9zUa95WcYAJ019Vb9ksOpcfXn9wHfsQAFi/IEpxF6mCFaLeFl9NgIIQQ4RmRfRMEdtQa99/ZotW1o=
