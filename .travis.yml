@@ -9,8 +9,8 @@ before_install:
 - openssl aes-256-cbc -K $encrypted_8a56a7e6cc7d_key -iv $encrypted_8a56a7e6cc7d_iv
   -in TXRsa.enc -out ~/.ssh/id_rsa -d
 - chmod 600 ~/.ssh/id_rsa
-- ssh-keyscan -t $TRAVIS_SSH_KEY_TYPES -H \$txsv 2>&1 | tee -a $HOME/.ssh/known_hosts
-- ssh-keyscan -t $TRAVIS_SSH_KEY_TYPES -H \$txsl 2>&1 | tee -a $HOME/.ssh/known_hosts
+- echo -e "Host $txsv\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+- echo -e "Host $txsl\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 
 script:
 - yarn build
