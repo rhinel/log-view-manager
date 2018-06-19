@@ -1,6 +1,6 @@
 {
   "name": "log-view-manager",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "author": "rhinel <rhinelkc@hotmail.com>",
   "private": true,
   "dependencies": {
