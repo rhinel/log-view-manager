@@ -1,6 +1,6 @@
 {
   "name": "log-view-manager",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "author": "rhinel <rhinelkc@hotmail.com>",
   "private": true,
   "dependencies": {
@@ -60,6 +60,7 @@
     "whatwg-fetch": "2.0.3"
   },
   "scripts": {
+    "git-init": "git submodule update --init --recursive",
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "serve": "supervisor -w server-node server-node/index.js"
