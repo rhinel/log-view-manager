@@ -17,11 +17,9 @@ script:
 
 after_success:
 - tar -jcf build.tar.bz2 build/*
-- scp build.tar.bz2 root@$txsv:~/;
-- ssh root@$txsv "sudo -i mv /root/build.tar.bz2 ./gitcode/log-view-manager/";
+- scp build.tar.bz2 root@$txsv:~/gitcode/log-view-manager/;
 - ssh root@$txsv "sudo -i ./gitcode/log-view-manager/autoFetch.sh $TRAVIS_BRANCH";
-- scp build.tar.bz2 root@$txsl:~/;
-- ssh root@$txsl "sudo -i mv /root/build.tar.bz2 ./gitcode/log-view-manager/";
+- scp build.tar.bz2 root@$txsl:~/gitcode/log-view-manager/;
 - ssh root@$txsl "sudo -i ./gitcode/log-view-manager/autoFetch.sh $TRAVIS_BRANCH";
 
 branches:
