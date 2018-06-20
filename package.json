@@ -1,6 +1,6 @@
 {
   "name": "log-view-manager",
-  "version": "0.1.11",
+  "version": "1.1.12",
   "author": "rhinel <rhinelkc@hotmail.com>",
   "private": true,
   "dependencies": {
@@ -63,7 +63,7 @@
     "git-init": "git submodule update --init --recursive",
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "serve": "supervisor -w server-node server-node/index.js"
+    "serve": "cd ./server-node && supervisor index.js"
   },
   "proxy": {
     "^/api": {
