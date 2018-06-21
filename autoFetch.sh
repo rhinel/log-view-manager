@@ -21,7 +21,7 @@ git fetch -p
 
 echo -e "\033[34m`date "+%T"`\033[0m"  "--> 更新生产版本依赖"
 
-yarn
+yarn # install --production=true
 
 yarn git-init
 
