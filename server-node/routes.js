@@ -1,4 +1,5 @@
 const fs = require('fs')
+const express = require('express')
 const path = require('path')
 const log4js = require('log4js')
 
@@ -6,7 +7,7 @@ const controller = require('./controllers')
 
 const sysLog = log4js.getLogger('sys')
 
-module.exports = (app, express) => {
+module.exports = app => {
   // 外部接口处理
   app.route('/api/outer/:class/:function?').post(controller.outer)
 
@@ -36,9 +37,9 @@ module.exports = (app, express) => {
       (req.hostname && req.hostname === 'log.fantasy-nations.cn')
         || (req.hostname && req.hostname === 'log.rent-manager.cn')
       ) {
-      res.send(fs.readFileSync(path.resolve('../build/index.html'), 'utf-8'))
+      res.send(fs.readFileSync(path.resolve(__dirname, '../build/index.html'), 'utf-8'))
     } else {
-      res.send(fs.readFileSync(path.resolve('../404/404.html'), 'utf-8'))
+      res.send(fs.readFileSync(path.resolve(__dirname, '../404/404.html'), 'utf-8'))
     }
   })
 }
