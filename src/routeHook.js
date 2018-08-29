@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { Message, Loading } from 'element-react';
 import Qs from 'query-string';
+/* eslint-disable import/no-unresolved */
 import C from '@/common/config';
 import Request from '@/common/request';
 
 let RoutePathname = '';
 
 const RouteHookLogin = (loginComponent) => {
-  class RouteHookLogin extends Component {
+  class RouteHookLoginClass extends Component {
     constructor(props) {
       super(props);
 
@@ -57,12 +58,14 @@ const RouteHookLogin = (loginComponent) => {
     }
 
     render() {
-      const Component = this.state.component;
-      const auth = this.state.auth;
+      const renderComponent = this.state.component;
+      const { auth } = this.state;
 
-      if (!auth && Component) {
-        return <Component {...this.props} />;
-      } else if (auth && Component) {
+      if (!auth && renderComponent) {
+        return <renderComponent {...this.props} />;
+      }
+
+      if (auth && renderComponent) {
         let innerPath;
         const search = Qs.parse(this.props.location.search);
         if (search.backurl) {
@@ -79,11 +82,11 @@ const RouteHookLogin = (loginComponent) => {
     }
   }
 
-  return RouteHookLogin;
+  return RouteHookLoginClass;
 }
 
 const RouteHookAuth = (underAuthComponent) => {
-  class RouteHookAuth extends Component {
+  class RouteHookAuthClass extends Component {
     constructor(props) {
       super(props);
 
@@ -142,16 +145,18 @@ const RouteHookAuth = (underAuthComponent) => {
     }
 
     render() {
-      const Component = this.state.component;
-      const auth = this.state.auth;
+      const renderComponent = this.state.component;
+      const { auth } = this.state;
 
-      if (auth && Component) {
-        return <Component {...this.props} />;
-      } else if (!auth && Component) {
+      if (auth && renderComponent) {
+        return <renderComponent {...this.props} />;
+      }
+
+      if (!auth && renderComponent) {
         const loginPath = {
           pathname: '/login',
           search: `?backurl=${encodeURIComponent(
-            window.location.hash.replace('#', '')
+            window.location.hash.replace('#', ''),
           )}`,
         };
         return <Redirect to={loginPath} />;
@@ -161,7 +166,7 @@ const RouteHookAuth = (underAuthComponent) => {
     }
   }
 
-  return RouteHookAuth;
+  return RouteHookAuthClass;
 }
 
 export {

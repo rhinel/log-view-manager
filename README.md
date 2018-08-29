@@ -1,9 +1,11 @@
 # log-view-manager
 
-[![Build Status](https://travis-ci.org/rhinel/log-view-manager.svg?branch=master)](https://travis-ci.org/rhinel/log-view-manager)<br>
+[![Build Status](https://travis-ci.org/rhinel/log-view-manager.svg?branch=master)](https://travis-ci.org/rhinel/log-view-manager)
 
-> log-view-manager for server<br>
-> 项目后端：nodejs mongodb redis<br>
+> log-view-manager for server
+>
+> 项目后端：nodejs mongodb redis
+>
 > 项目前端：webpack react ElementUI superagent
 
 ## Build Setup

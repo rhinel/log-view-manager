@@ -36,7 +36,7 @@ module.exports = app => {
     if (
       (req.hostname && req.hostname === 'log.fantasy-nations.cn')
         || (req.hostname && req.hostname === 'log.rent-manager.cn')
-      ) {
+    ) {
       res.send(fs.readFileSync(path.resolve(__dirname, '../build/index.html'), 'utf-8'))
     } else {
       res.send(fs.readFileSync(path.resolve(__dirname, '../404/404.html'), 'utf-8'))

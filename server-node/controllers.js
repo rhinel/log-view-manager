@@ -64,7 +64,6 @@ const inner = (req, res, next) => {
   if (req.params.class === 'auth') {
     delete req.typeApi
     res.json(code(req, 0))
-
   } else if (req.params.class === 'dashboard') {
     if (req.params.function === 'folderAdd') {
       serviceDash
@@ -89,7 +88,6 @@ const inner = (req, res, next) => {
     } else {
       next()
     }
-
   } else {
     next()
   }

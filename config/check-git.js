@@ -1,3 +1,5 @@
+'use strict';
+
 const fs = require('fs');
 
 const gitHEAD = fs.readFileSync('.git/HEAD', 'utf-8').trim();

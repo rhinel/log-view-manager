@@ -1,7 +1,17 @@
 import React, { Component } from 'react';
 import { withRouter as WithRouter, Link } from 'react-router-dom';
-import { Breadcrumb, Button, Dialog, Form,
-  Input, Table, Message, Popover, Select } from 'element-react';
+import {
+  Breadcrumb,
+  Button,
+  Dialog,
+  Form,
+  Input,
+  Table,
+  Message,
+  Popover,
+  Select,
+} from 'element-react';
+/* eslint-disable import/no-unresolved */
 import Request from '@/common/request';
 
 import './dashboard.scss';
@@ -21,84 +31,76 @@ class Dashboard extends Component {
       folderColumns: [
         {
           type: 'expand',
-          expandPannel: data => {
-            return (
-              data.regexps.map((regexp, index) => {
-                return (
-                  <div
-                    key={regexp.key}
-                  >{index}: {regexp.value}</div>
-                );
-              })
-            );
-          },
+          expandPannel: data => (
+            data.regexps.map((regexp, index) => (
+              <div
+                key={regexp.key}
+              >{index}: {regexp.value}</div>
+            ))
+          ),
         },
         { label: '模块名称', prop: 'projectName', width: 150 },
         {
           label: '目录名称',
           prop: 'folderName',
           width: 150,
-          render: data => {
-            return (
-              <Button type="text">
-                <Link
-                  to={`/inner/dashboard/${data._id}`}
-                >{data.folderName}</Link>
-              </Button>
-            );
-          }
+          render: data => (
+            <Button type="text">
+              <Link
+                to={`/inner/dashboard/${data._id}`}
+              >{data.folderName}</Link>
+            </Button>
+          ),
         },
         { label: '目录地址', prop: 'address' },
         {
           label: '操作',
           width: 135,
-          render: data => {
-            return (
-              <span
-                key={data._id}>
-                <Button
-                  plain={true}
-                  type="info"
-                  size="small"
-                  onClick={this.openDialog.bind(this, data)}
-                >编辑</Button>
+          render: data => (
+            <span
+              key={data._id}>
+              <Button
+                plain={true}
+                type="info"
+                size="small"
+                onClick={this.openDialog.bind(this, data)}
+              >编辑</Button>
 
-                <Popover
-                  key={data._id}
-                  placement="top"
-                  width="160"
-                  trigger="hover"
-                  visible={this.state.popovering === data._id}
-                  content={(
-                    <div>
-                      <p>确定删除吗？</p>
-                      <div
-                        className="pop-in-btn">
-                        <Button
-                          size="mini"
-                          type="text"
-                          onClick={this.closePopover.bind(this)}
-                        >取消</Button>
-                        <Button
-                          type="danger"
-                          size="mini"
-                          onClick={this.folderDel.bind(this, data._id)}
-                        >确定</Button>
-                      </div>
+              <Popover
+                key={data._id}
+                placement="top"
+                width="160"
+                trigger="hover"
+                visible={this.state.popovering === data._id}
+                content={(
+                  <div>
+                    <p>确定删除吗？</p>
+                    <div
+                      className="pop-in-btn">
+                      <Button
+                        size="mini"
+                        type="text"
+                        onClick={this.closePopover.bind(this)}
+                      >取消</Button>
+                      <Button
+                        type="danger"
+                        size="mini"
+                        onClick={this.folderDel.bind(this, data._id)}
+                      >确定</Button>
                     </div>
-                  )}
-                >
-                  <Button
-                    loading={this.delLoading === data._id}
-                    className="pop-out-btn"
-                    type="danger"
-                    size="small"
-                    onClick={this.openPopover.bind(this, data._id)}
-                  >删除</Button>
-                </Popover>
-              </span>
-            );
-          },
+                  </div>
+                )}
+              >
+                <Button
+                  loading={this.delLoading === data._id}
+                  className="pop-out-btn"
+                  type="danger"
+                  size="small"
+                  onClick={this.openPopover.bind(this, data._id)}
+                >删除</Button>
+              </Popover>
+            </span>
+          ),
         },
       ],
       folderList: [],
@@ -205,7 +207,7 @@ class Dashboard extends Component {
         {},
         this.state.addinfo,
         { [key]: value },
-      )
+      ),
     });
   }
 
@@ -228,7 +230,7 @@ class Dashboard extends Component {
   removeRegexp(item, e) {
     e.preventDefault();
 
-    var index = this.state.addinfo.regexps.indexOf(item);
+    const index = this.state.addinfo.regexps.indexOf(item);
     if (index !== -1) {
       this.state.addinfo.regexps.splice(index, 1);
       this.forceUpdate();
@@ -259,10 +261,12 @@ class Dashboard extends Component {
     try {
       await new Promise((resolve, reject) => {
         this.refs.addinfo.validate(
-          result => result
-            ? resolve()
-            : reject()
-          );
+          result => (
+            result
+              ? resolve()
+              : reject()
+          ),
+        );
       });
     } catch (err) {
       console.log(err);
@@ -273,7 +277,7 @@ class Dashboard extends Component {
       addLoading: true,
     });
 
-    let postData = JSON.parse(JSON.stringify(this.state.addinfo));
+    const postData = JSON.parse(JSON.stringify(this.state.addinfo));
     try {
       await Request('/inner/dashboard/folderAdd', postData);
     } catch (err) {
@@ -405,66 +409,62 @@ class Dashboard extends Component {
               </Form.Item>
 
               {
-                this.state.addinfo.regexps.map((regexp, index) => {
-                  return (
-                    <Form.Item
-                      key={regexp.key}
-                      label={`正则${index}`}
-                      prop={`regexps:${index}`}
-                      rules={{
-                        type: 'object',
-                        required: true,
-                        fields: {
-                          type: {
-                            required: true,
-                            message: '请选择',
-                            trigger: 'blur change'
-                          },
-                          value: {
-                            required: true,
-                            message: '请填写',
-                            trigger: 'blur change'
-                          },
+                this.state.addinfo.regexps.map((regexp, index) => (
+                  <Form.Item
+                    key={regexp.key}
+                    label={`正则${index}`}
+                    prop={`regexps:${index}`}
+                    rules={{
+                      type: 'object',
+                      required: true,
+                      fields: {
+                        type: {
+                          required: true,
+                          message: '请选择',
+                          trigger: 'blur change',
                         },
-                      }}
+                        value: {
+                          required: true,
+                          message: '请填写',
+                          trigger: 'blur change',
+                        },
+                      },
+                    }}
+                  >
+                    <Select
+                      value={regexp.type}
+                      onChange={this.onRegexpChange.bind(this, index, 'type')}
                     >
-                      <Select
-                        value={regexp.type}
-                        onChange={this.onRegexpChange.bind(this, index, 'type')}
-                      >
-                        {
-                          this.state.regexpTypeList.map(el => {
-                            return (
-                              <Select.Option
-                                key={el}
-                                label={el}
-                                value={el} />
-                            )
-                          })
-                        }
-                      </Select>
-
-                      <Input
-                        value={regexp.value}
-                        type="textarea"
-                        autosize={true}
-                        onChange={this.onRegexpChange.bind(this, index, 'value')} />
-
-                      <Input
-                        value={regexp.toValue}
-                        type="textarea"
-                        autosize={true}
-                        onChange={this.onRegexpChange.bind(this, index, 'toValue')} />
-
-                      {index > 0 &&
-                        <Button
-                          type="danger"
-                          onClick={this.removeRegexp.bind(this, regexp)}
-                        >删除</Button>
+                      {
+                        this.state.regexpTypeList.map(el => (
+                          <Select.Option
+                            key={el}
+                            label={el}
+                            value={el} />
+                        ))
                       }
-                    </Form.Item>
-                  );
-                })
+                    </Select>
+
+                    <Input
+                      value={regexp.value}
+                      type="textarea"
+                      autosize={true}
+                      onChange={this.onRegexpChange.bind(this, index, 'value')} />
+
+                    <Input
+                      value={regexp.toValue}
+                      type="textarea"
+                      autosize={true}
+                      onChange={this.onRegexpChange.bind(this, index, 'toValue')} />
+
+                    {index > 0
+                      && <Button
+                        type="danger"
+                        onClick={this.removeRegexp.bind(this, regexp)}
+                      >删除</Button>
+                    }
+                  </Form.Item>
+                ))
               }
 
               <Form.Item>
@@ -501,7 +501,6 @@ class Dashboard extends Component {
       </div>
     )
   }
-
 }
 
 export default WithRouter(Dashboard);

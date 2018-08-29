@@ -4,7 +4,6 @@ import { Breadcrumb } from 'element-react';
 import './setting.scss';
 
 class Setting extends Component {
-
   render() {
     return (
       <div className="inner setting">
@@ -16,7 +15,6 @@ class Setting extends Component {
       </div>
     )
   }
-
 }
 
 export default Setting;
