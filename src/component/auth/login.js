@@ -3,6 +3,7 @@ import { withRouter as WithRouter } from 'react-router-dom';
 import { Card, Form, Input, Button, Message } from 'element-react';
 import Md5 from 'md5';
 import Qs from 'query-string';
+/* eslint-disable import/no-unresolved */
 import C from '@/common/config';
 import Request from '@/common/request';
 import PackageConfig from '@/../package.json';
@@ -44,10 +45,12 @@ class Login extends Component {
     try {
       await new Promise((resolve, reject) => {
         this.refs.logininfo.validate(
-          result => result
-            ? resolve()
-            : reject()
-          );
+          result => (
+            result
+              ? resolve()
+              : reject()
+          ),
+        );
       });
     } catch (err) {
       console.log(err);
@@ -55,7 +58,7 @@ class Login extends Component {
     }
 
     this.setState({
-        logininfo: Object.assign(
+      logininfo: Object.assign(
         {},
         this.state.logininfo,
         { loading: true },
@@ -107,7 +110,7 @@ class Login extends Component {
         {},
         this.state.logininfo,
         { [key]: value },
-      )
+      ),
     });
   }
 

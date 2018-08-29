@@ -32,6 +32,7 @@ module.exports = {
     }
 
     // 2查询用户名和密码校验
+    // eslint-disable-next-line global-require
     const dbInfo = require('./auth-json/auth.json')
 
     // 账号密码错误次数5分钟300秒机制，成功清除错误记录

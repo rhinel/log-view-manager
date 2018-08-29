@@ -5,6 +5,7 @@ import {
   Switch,
 } from 'react-router-dom';
 
+/* eslint-disable import/no-unresolved */
 import {
   RouteHookAuth,
   RouteHookLogin,
@@ -16,7 +17,7 @@ import Dashboard from '@/component/dashboard/dashboard';
 import DashFolder from '@/component/dash-folder/dash-folder';
 import Setting from '@/component/setting/setting';
 
-export const Root = () => (
+export default () => (
   <Router>
     <div className="router-wrap">
       <Switch>

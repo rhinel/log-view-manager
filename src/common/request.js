@@ -1,5 +1,6 @@
 import Superagent from 'superagent';
 import { Message } from 'element-react';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import CreateHistory from 'history/createHashHistory';
 
 import c from './config';
@@ -9,17 +10,16 @@ const rootPath = c.AjaxRootPath
 const pre = c.Storage
 
 // 方法封装
-const Request = (path, body) => {
-  path = rootPath + path
-  body = Object.assign({
+const Request = (_path, _body) => {
+  const path = rootPath + _path
+  const body = Object.assign({
     token: localStorage.getItem(`${pre}token`),
-  }, body || {})
+  }, _body || {})
 
   return Superagent
     .post(path)
     .send(body)
     .catch(err => {
-
       // 接口错误，报错退出
       Message({
         type: 'error',
@@ -32,9 +32,8 @@ const Request = (path, body) => {
       const { code, msg, data } = res.body
 
       // 非正常情况，返回错误
+      // 非auth接口，登陆失效或者未登陆，先报错后，清除旧登陆信息，跳转
       if (code === 2001 && !path.includes('/auth')) {
-
-        // 非auth接口，登陆失效或者未登陆，先报错后，清除旧登陆信息，跳转
         localStorage.removeItem(`${pre}token`)
 
         Message({
@@ -45,17 +44,19 @@ const Request = (path, body) => {
 
         CreateHistory()
           .push(`/login?backurl=${encodeURIComponent(
-            window.location.hash.replace('#', '')
+            window.location.hash.replace('#', ''),
           )}`);
 
         return Promise.reject(new Error(msg))
-      } else if (code === 2001) {
+      }
 
-        // auth接口，返回msg
+      // auth接口，返回msg
+      if (code === 2001) {
         return Promise.reject(new Error(msg))
-      } else if (code || code === null) {
+      }
 
-        // 其他接口返回错误代码
+      // 其他接口返回错误代码
+      if (code || code === null) {
         Message({
           type: 'error',
           message: `编号：${code}，${msg}`,

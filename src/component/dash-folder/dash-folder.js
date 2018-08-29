@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter as WithRouter, Link } from 'react-router-dom';
 import { Breadcrumb, Button, Select, Table } from 'element-react';
+/* eslint-disable import/no-unresolved */
 import Request from '@/common/request';
 
 import './dash-folder.scss';
@@ -36,14 +37,17 @@ class DashFolder extends Component {
     let dataList = {};
     let folder = {};
     let dataKeyList = [];
-    let dataKeySelect = value;
+    let dataKeySelect = value || '';
 
     try {
       const data = await Request('/inner/dashboard/dataList', {
         _id: this.props.match.params.id,
-        dataKeySelect: dataKeySelect || '',
+        dataKeySelect,
       });
+
+      // eslint-disable-next-line prefer-destructuring
       dataList = data.dataList;
+      // eslint-disable-next-line prefer-destructuring
       folder = data.folder;
       dataKeyList = data.dataFileList;
     } catch (err) {
@@ -62,14 +66,12 @@ class DashFolder extends Component {
         if (!cIndex) {
           return {
             type: 'expand',
-            expandPannel: data => {
-              return (
-                <div className="expand-wrap">
-                  <div>{columnInfo[0]}: </div>
-                  <div dangerouslySetInnerHTML={{ __html: data.input}} />
-                </div>
-              )
-            },
+            expandPannel: data => (
+              <div className="expand-wrap">
+                <div>{columnInfo[0]}: </div>
+                <div dangerouslySetInnerHTML={{ __html: data.input }} />
+              </div>
+            ),
           };
         }
 
@@ -111,7 +113,7 @@ class DashFolder extends Component {
             </Breadcrumb.Item>
             <Breadcrumb.Item>
               {this.state.folder.projectName}
-              {` - `}
+              {' - '}
               {this.state.folder.folderName}
             </Breadcrumb.Item>
           </Breadcrumb>
@@ -130,14 +132,12 @@ class DashFolder extends Component {
             onChange={this.onDataSelectChange.bind(this)}
           >
             {
-              this.state.dataKeyList.map(el => {
-                return (
-                  <Select.Option
-                    key={el}
-                    label={el}
-                    value={el} />
-                );
-              })
+              this.state.dataKeyList.map(el => (
+                <Select.Option
+                  key={el}
+                  label={el}
+                  value={el} />
+              ))
             }
           </Select>
         </div>
@@ -149,7 +149,6 @@ class DashFolder extends Component {
       </div>
     )
   }
-
 }
 
 export default WithRouter(DashFolder);

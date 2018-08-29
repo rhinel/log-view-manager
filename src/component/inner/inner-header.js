@@ -5,11 +5,10 @@ import { Menu } from 'element-react';
 import './inner-header.scss';
 
 class InnerHeader extends Component {
-
   onSelect(path) {
     if (this.props.location.pathname === path) return;
     this.props.history
-        .push(path);
+      .push(path);
   }
 
   checkSelect(path) {
@@ -45,7 +44,6 @@ class InnerHeader extends Component {
       </div>
     )
   }
-
 }
 
 export default WithRouter(InnerHeader);

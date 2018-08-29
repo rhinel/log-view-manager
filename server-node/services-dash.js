@@ -1,6 +1,7 @@
 const FoundError = require('./config-error')
 const db = require('./models')
 
+// eslint-disable-next-line import/order
 const fs = require('fs')
 
 const isLocal = process.argv[2] === 'server'
@@ -143,7 +144,7 @@ module.exports = {
     // 2获取日志文件
     // 读取目录
     const rootPath = isLocal ? '/gitcode/' : '../'
-    const address = folder.address
+    const { address } = folder
 
     const dataFileList = fs.readdirSync(rootPath + address)
 
