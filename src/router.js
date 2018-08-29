@@ -17,7 +17,8 @@ import Dashboard from '@/component/dashboard/dashboard';
 import DashFolder from '@/component/dash-folder/dash-folder';
 import Setting from '@/component/setting/setting';
 
-export default () => (
+// eslint-disable-next-line import/prefer-default-export
+export const Root = () => (
   <Router>
     <div className="router-wrap">
       <Switch>
