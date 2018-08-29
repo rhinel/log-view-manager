@@ -58,14 +58,14 @@ const RouteHookLogin = (loginComponent) => {
     }
 
     render() {
-      const renderComponent = this.state.component;
+      const RenderComponent = this.state.component;
       const { auth } = this.state;
 
-      if (!auth && renderComponent) {
-        return <renderComponent {...this.props} />;
+      if (!auth && RenderComponent) {
+        return <RenderComponent {...this.props} />;
       }
 
-      if (auth && renderComponent) {
+      if (auth && RenderComponent) {
         let innerPath;
         const search = Qs.parse(this.props.location.search);
         if (search.backurl) {
@@ -145,14 +145,14 @@ const RouteHookAuth = (underAuthComponent) => {
     }
 
     render() {
-      const renderComponent = this.state.component;
+      const RenderComponent = this.state.component;
       const { auth } = this.state;
 
-      if (auth && renderComponent) {
-        return <renderComponent {...this.props} />;
+      if (auth && RenderComponent) {
+        return <RenderComponent {...this.props} />;
       }
 
-      if (!auth && renderComponent) {
+      if (!auth && RenderComponent) {
         const loginPath = {
           pathname: '/login',
           search: `?backurl=${encodeURIComponent(
