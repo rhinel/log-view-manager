@@ -1,6 +1,6 @@
 {
   "name": "log-view-manager",
-  "version": "1.1.15",
+  "version": "1.1.16",
   "author": "rhinel <rhinelkc@hotmail.com>",
   "private": true,
   "dependencies": {
@@ -124,15 +124,22 @@
     "rules": {
       "prefer-destructuring": [
         "error",
-        { "object": true, "array": false }
+        {
+          "object": true,
+          "array": false
+        }
       ],
       "object-curly-newline": [
         "error",
-        { "consistent": true }
+        {
+          "consistent": true
+        }
       ],
       "no-param-reassign": [
         "error",
-        { "props": false }
+        {
+          "props": false
+        }
       ],
       "class-methods-use-this": 0,
       "no-multi-spaces": 0,
