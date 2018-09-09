@@ -124,7 +124,7 @@ class DashFolder extends Component {
             loading={this.state.fetchLoading}
             type="primary"
             size="small"
-            onClick={this.fetchList.bind(this)}
+            onClick={this.fetchList.bind(this, this.state.dataKeySelect)}
           >刷新</Button>
 
           <Select
