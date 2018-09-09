@@ -13,5 +13,5 @@ docker run \
  -v /etc/localtime:/etc/localtime \
  -v ~/gitcode/log-view-manager:/webapp \
  -v ~/gitcode/:/gitcode \
- -w /webapp/server-node \
+ -w /webapp/server \
  -d node node index server

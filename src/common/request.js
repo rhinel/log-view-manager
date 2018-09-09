@@ -16,11 +16,14 @@ const Request = (_path, _body) => {
     token: localStorage.getItem(`${pre}token`),
   }, _body || {})
 
+  console.log(_body)
+
   return Superagent
     .post(path)
     .send(body)
     .catch(err => {
       // 接口错误，报错退出
+      console.log(err)
       Message({
         type: 'error',
         message: `状态：${err.status}，网络/服务器错误`,
