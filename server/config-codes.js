@@ -47,8 +47,17 @@ module.exports = (req = {}, code = 0, data = '') => {
 
   if (data instanceof Error) {
     return {
-      code: parseInt(`${code}${data.code || ''}`, 10),
-      msg: data.message || codeList[code] || '未定义错误',
+      code: Number(`${
+        code
+      }${
+        typeof data.code === 'number' ? data.code : ''
+      }`),
+      msg: `${
+        data.code && typeof data.code !== 'number'
+          ? `${data.code} ` : ''
+      }${
+        data.message || codeList[code] || '未定义错误'
+      }`,
     }
   }
 
