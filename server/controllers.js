@@ -44,7 +44,10 @@ const outer = (req, res, next) => {
 // auth类，成功则跳过
 const auth = (req, res, next) => {
   // 接口校验
-  const token = req.body.token || req.query.token || req.headers.token || ''
+  const token = req.body.token
+    || req.query.token
+    || req.headers.token
+    || ''
   if (!token) {
     res.json(code(req, 2001))
   } else {
