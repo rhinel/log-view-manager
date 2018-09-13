@@ -13,6 +13,8 @@ const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const CompressionWebpackPlugin = require('compression-webpack-plugin');
 const paths = require('./paths');
+const packageConfig = require('../package.json');
+const checkGit = require('./check-git');
 const getClientEnvironment = require('./env');
 const os = require('os');
 
@@ -246,6 +248,8 @@ module.exports = {
     // Generates an `index.html` file with the <script> injected.
     new HtmlWebpackPlugin({
       inject: true,
+      version: packageConfig.version,
+      gitPath: checkGit,
       template: paths.appHtml,
       minify: {
         removeComments: true,
