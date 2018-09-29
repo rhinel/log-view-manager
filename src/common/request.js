@@ -16,8 +16,6 @@ const Request = (_path, _body) => {
     token: localStorage.getItem(`${pre}token`),
   }, _body || {})
 
-  console.log(_body)
-
   return Superagent
     .post(path)
     .send(body)
