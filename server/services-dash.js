@@ -143,7 +143,7 @@ module.exports = {
 
     // 2获取日志文件
     // 读取目录
-    const rootPath = isLocal ? '/gitcode/' : '../'
+    const rootPath = isLocal ? '/gitcode/' : '../../'
     const { address } = folder
 
     const dataFileList = fs.readdirSync(rootPath + address)
